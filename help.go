@@ -8,7 +8,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/rwxrob/bonzai/comp"
+	"github.com/rwxrob/bonzai"
 	Z "github.com/rwxrob/bonzai/z"
 	"github.com/rwxrob/fn/filt"
 	"github.com/rwxrob/to"
@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.2.0`,
+	Version:   `v0.2.1`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
@@ -79,7 +79,7 @@ var Cmd = &Z.Cmd{
 	},
 }
 
-func helpCompleter(x comp.Command, args ...string) []string {
+func helpCompleter(x bonzai.Command, args ...string) []string {
 
 	// not sure we've completed the command name itself yet
 	if len(args) == 0 {
@@ -93,7 +93,7 @@ func helpCompleter(x comp.Command, args ...string) []string {
 	// if the caller has other sections get those
 	caller := x.GetCaller()
 	if caller != nil {
-		other := caller.GetOther()
+		other := caller.GetOtherTitles()
 		if other != nil {
 			list = append(list, other...)
 		}
