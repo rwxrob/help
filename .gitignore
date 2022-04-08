@@ -1,0 +1,4 @@
+go.work
+dist
+go.sum
+go.work.sum
