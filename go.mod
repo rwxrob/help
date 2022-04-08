@@ -3,7 +3,7 @@ module github.com/rwxrob/help
 go 1.18
 
 require (
-	github.com/rwxrob/bonzai v0.1.8
+	github.com/rwxrob/bonzai v0.2.0
 	github.com/rwxrob/fn v0.3.3
 	github.com/rwxrob/to v0.4.5
 )
