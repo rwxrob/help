@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.2.1`,
+	Version:   `v0.2.2`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
@@ -143,7 +143,8 @@ func ForTerminal(x *Z.Cmd, section string) {
 		printIfHave(x.Name, "params", x.UsageParams())
 
 	case "commands":
-		printIfHave(x.Name, "commands", x.UsageCmdTitles())
+		printIfHave(x.Name, "commands",
+			strings.TrimRight(x.UsageCmdTitles(), "\n"))
 
 	case "description", "desc":
 		printIfHave(x.Name, "description",
