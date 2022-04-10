@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.2.4`,
+	Version:   `v0.2.5`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
@@ -223,18 +223,18 @@ func ForTerminal(x *Z.Cmd, section string) {
 			Z.PrintMark(desc)
 		}
 
-		legal := x.Legal()
-		if len(legal) > 0 {
-			Z.PrintEmph("**LEGAL**\n")
-			Z.PrintIndent(legal)
-			fmt.Println()
-		}
-
 		if len(x.Other) > 0 {
 			for _, s := range x.Other {
 				Z.PrintEmphf("**%v**\n", strings.ToUpper(s.Title))
 				Z.PrintMark(s.Body)
 			}
+		}
+
+		legal := x.Legal()
+		if len(legal) > 0 {
+			Z.PrintEmph("**LEGAL**\n")
+			Z.PrintIndent(legal)
+			fmt.Println()
 		}
 
 	default:
