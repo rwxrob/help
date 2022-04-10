@@ -148,7 +148,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 
 	case "description", "desc":
 		printIfHave(x.Name, "description",
-			to.Dedented(strings.TrimRight(Z.Mark(x.Description), "\n")))
+			to.Dedented(strings.TrimRight(Z.Mark(x.GetDescription()), "\n")))
 
 	case "examples":
 		log.Printf("examples are planned but not yet implemented")
@@ -217,9 +217,10 @@ func ForTerminal(x *Z.Cmd, section string) {
 			fmt.Println()
 		}
 
-		if len(x.Description) > 0 {
+		desc := x.GetDescription()
+		if len(desc) > 0 {
 			Z.PrintEmph("**DESCRIPTION**\n")
-			Z.PrintMark(x.Description)
+			Z.PrintMark(desc)
 		}
 
 		legal := x.Legal()
