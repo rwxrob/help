@@ -134,10 +134,10 @@ func ForTerminal(x *Z.Cmd, section string) {
 		printIfHave("command", "name", x.Name)
 
 	case "title":
-		printIfHave(x.Name, "title", x.Title())
+		printIfHave(x.Name, "title", x.GetTitle())
 
 	case "summary":
-		printIfHave(x.Name, "summary", x.Summary)
+		printIfHave(x.Name, "summary", x.GetSummary())
 
 	case "params":
 		printIfHave(x.Name, "params", x.UsageParams())
@@ -154,21 +154,21 @@ func ForTerminal(x *Z.Cmd, section string) {
 		log.Printf("examples are planned but not yet implemented")
 
 	case "legal":
-		printIfHave(x.Name, "legal", x.Legal())
+		printIfHave(x.Name, "legal", x.GetLegal())
 
 	case "copyright":
-		printIfHave(x.Name, "copyright", x.Copyright)
+		printIfHave(x.Name, "copyright", x.GetCopyright())
 
 	case "license":
-		printIfHave(x.Name, "license", x.License)
+		printIfHave(x.Name, "license", x.GetLicense())
 
 	case "version":
-		printIfHave(x.Name, "version", x.Version)
+		printIfHave(x.Name, "version", x.GetVersion())
 
 	case "all":
 
 		Z.PrintEmph("**NAME**\n")
-		Z.PrintMark(x.Title() + "\n\n")
+		Z.PrintMark(x.GetTitle() + "\n\n")
 
 		// always print a synopsis so we can communicate with command
 		// developers about invalid field combinations through ERRORs
@@ -178,7 +178,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 		switch {
 
 		case x.Usage != "":
-			Z.PrintMarkf("%v %v", x.Name, x.Usage)
+			Z.PrintMarkf("%v %v", x.Name, x.GetUsage())
 
 		case x.Call == nil && x.Params != nil:
 			Z.PrintMarkf(
@@ -224,13 +224,13 @@ func ForTerminal(x *Z.Cmd, section string) {
 		}
 
 		if len(x.Other) > 0 {
-			for _, s := range x.Other {
-				Z.PrintEmphf("**%v**\n", strings.ToUpper(s.Title))
-				Z.PrintMark(s.Body)
+			for _, s := range x.GetOther() {
+				Z.PrintEmphf("**%v**\n", strings.ToUpper(s.GetTitle()))
+				Z.PrintMark(s.GetBody())
 			}
 		}
 
-		legal := x.Legal()
+		legal := x.GetLegal()
 		if len(legal) > 0 {
 			Z.PrintEmph("**LEGAL**\n")
 			Z.PrintIndent(legal)
@@ -238,9 +238,9 @@ func ForTerminal(x *Z.Cmd, section string) {
 		}
 
 	default:
-		for _, s := range x.Other {
-			if strings.ToLower(s.Title) == section {
-				out := Z.Mark(s.Body)
+		for _, s := range x.GetOther() {
+			if strings.ToLower(s.GetTitle()) == section {
+				out := Z.Mark(s.GetBody())
 				out = to.Dedented(out)
 				out = strings.TrimRight(out, "\n")
 				fmt.Println(out)
