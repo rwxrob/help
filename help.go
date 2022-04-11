@@ -18,14 +18,15 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.3.0`,
+	Version:   `v0.3.1`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
 	Usage:     `[SECTION|all]`,
 	Params: []string{
 		"name", "title", "summary", "params", "commands", "description",
-		"examples", "legal", "copyright", "license", "version", "help",
+		"examples", "legal", "copyright", "license", "site", "source",
+		"issues", "contact", "version", "help",
 	},
 	Completer: helpCompleter,
 	Description: `
@@ -51,6 +52,10 @@ var Cmd = &Z.Cmd{
             legal         - version, copyright, license combined
             copyright     - legal copyright statement
             license       - SPDX license identifier
+            site          - URL home of {{.Name}}
+						source        - cloneable source URL (usually git)
+						issues        - URL where issues are reported
+						contact       - site, source, issues combined
             version       - semantic version matching git tag
 
         Other custom sections may have been added by Bonzai branch
@@ -165,6 +170,18 @@ func ForTerminal(x *Z.Cmd, section string) {
 	case "version":
 		printIfHave(x.Name, "version", x.GetVersion())
 
+	case "source":
+		printIfHave(x.Name, "source", x.GetSource())
+
+	case "issues":
+		printIfHave(x.Name, "issues", x.GetIssues())
+
+	case "site":
+		printIfHave(x.Name, "site", x.GetSite())
+
+	case "contact":
+		printIfHave(x.Name, "contact", strings.TrimRight(getContact(x), "\n"))
+
 	case "all":
 
 		Z.PrintEmph("**NAME**\n")
@@ -230,6 +247,13 @@ func ForTerminal(x *Z.Cmd, section string) {
 			}
 		}
 
+		contact := getContact(x)
+		if len(contact) > 0 {
+			Z.PrintEmph("**CONTACT**\n")
+			Z.PrintIndent(contact)
+			fmt.Println()
+		}
+
 		legal := x.GetLegal()
 		if len(legal) > 0 {
 			Z.PrintEmph("**LEGAL**\n")
@@ -247,4 +271,30 @@ func ForTerminal(x *Z.Cmd, section string) {
 			}
 		}
 	}
+}
+
+func getContact(x *Z.Cmd) string {
+	var out string
+
+	site := x.GetSite()
+	source := x.GetSource()
+	issues := x.GetIssues()
+
+	if len(site) > 0 {
+		if len(source) > 0 || len(issues) > 0 { // i'm not proud (rwxrob)
+			out += "Site:   " + site + "\n"
+		} else {
+			out += "Site: " + site + "\n"
+		}
+	}
+
+	if len(source) > 0 {
+		out += "Source: " + source + "\n"
+	}
+
+	if len(issues) > 0 {
+		out += "Issues: " + issues + "\n"
+	}
+
+	return out
 }
