@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.3.1`,
+	Version:   `v0.3.2`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
@@ -28,7 +28,7 @@ var Cmd = &Z.Cmd{
 		"examples", "legal", "copyright", "license", "site", "source",
 		"issues", "contact", "version", "help",
 	},
-	Completer: helpCompleter,
+	Comp: new(comp),
 	Description: `
 		The *help* command provide generic help documentation by looking at
 		the different fields of the given command associated with it. To get
@@ -84,7 +84,9 @@ var Cmd = &Z.Cmd{
 	},
 }
 
-func helpCompleter(x bonzai.Command, args ...string) []string {
+type comp struct{}
+
+func (comp) Complete(x bonzai.Command, args ...string) []string {
 
 	// not sure we've completed the command name itself yet
 	if len(args) == 0 {
