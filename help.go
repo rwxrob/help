@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:      `help`,
-	Version:   `v0.3.4`,
+	Version:   `v0.3.5`,
 	Copyright: `Copyright 2021 Robert S Muhlestein`,
 	License:   `Apache-2.0`,
 	Summary:   `display help similar to man page format`,
@@ -53,9 +53,9 @@ var Cmd = &Z.Cmd{
             copyright     - legal copyright statement
             license       - SPDX license identifier
             site          - URL home of {{.Name}}
-						source        - cloneable source URL (usually git)
-						issues        - URL where issues are reported
-						contact       - site, source, issues combined
+            source        - cloneable source URL (usually git)
+            issues        - URL where issues are reported
+            contact       - site, source, issues combined
             version       - semantic version matching git tag
 
         Other custom sections may have been added by Bonzai branch
