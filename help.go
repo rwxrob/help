@@ -17,12 +17,10 @@ import (
 // Cmd provides help documentation for the caller allowing the specific
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
-	Name:      `help`,
-	Version:   `v0.3.6`,
-	Copyright: `Copyright 2021 Robert S Muhlestein`,
-	License:   `Apache-2.0`,
-	Summary:   `display help similar to man page format`,
-	Usage:     `[SECTION|all]`,
+	Name:    `help`,
+	Version: `v0.3.7`,
+	Summary: `display help similar to man page format`,
+	Usage:   `[SECTION|all]`,
 	Params: []string{
 		"name", "title", "summary", "params", "commands", "description",
 		"examples", "legal", "copyright", "license", "site", "source",
