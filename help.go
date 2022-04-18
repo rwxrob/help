@@ -281,7 +281,7 @@ func getContact(x *Z.Cmd) string {
 	issues := x.GetIssues()
 
 	if len(site) > 0 {
-		if len(source) > 0 || len(issues) > 0 { // i'm not proud (rwxrob)
+		if len(source) > 0 || len(issues) > 0 {
 			out += "Site:   " + site + "\n"
 		} else {
 			out += "Site: " + site + "\n"
