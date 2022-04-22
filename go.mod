@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
-	github.com/rwxrob/compcmd v0.2.0 // indirect
+	github.com/rwxrob/compcmd v0.2.1 // indirect
 	github.com/rwxrob/config v0.4.0 // indirect
 	github.com/rwxrob/fs v0.5.0 // indirect
 	github.com/rwxrob/json v0.7.0 // indirect
