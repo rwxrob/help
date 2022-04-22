@@ -24,11 +24,11 @@ var Cmd = &Z.Cmd{
 	Params: []string{
 		"name", "title", "summary", "params", "commands", "description",
 		"examples", "legal", "copyright", "license", "site", "source",
-		"issues", "contact", "version", "help",
+		"issues", "contact", "version", "help", "shortcuts",
 	},
 	Comp: new(comp),
 	Description: `
-		The *help* command provide generic help documentation by looking at
+		The {{cmd .Name}} command provide generic help documentation by looking at
 		the different fields of the given command associated with it. To get
 		specific help provide the command for which help is wanted before
 		the help command. The exact section of help can also be specified as
@@ -36,13 +36,16 @@ var Cmd = &Z.Cmd{
 
 	Other: []Z.Section{
 		{`SECTIONS`, `
-        Sections are modeled after UNIX "man" pages:
+				Sections are modeled after UNIX "man" pages. Not all sections
+				are necessarily available depending on what has been
+				implemented:
 
             all           - display all sections (default)
             help          - displays this help
             name          - name of command
             title         - name with summary
             summary       - one line summary of command
+            shortcuts     - shorter versions of command branches
             params        - params are like commands, but not
             commands      - commands under this command
             description   - long description of command
@@ -98,6 +101,7 @@ func (comp) Complete(x bonzai.Command, args ...string) []string {
 	// if the caller has other sections get those
 	caller := x.GetCaller()
 	if caller != nil {
+		// FIXME: filter out help sections that are empty
 		other := caller.GetOtherTitles()
 		if other != nil {
 			list = append(list, other...)
@@ -150,6 +154,10 @@ func ForTerminal(x *Z.Cmd, section string) {
 	case "commands":
 		printIfHave(x.Name, "commands",
 			strings.TrimRight(x.UsageCmdTitles(), "\n"))
+
+	case "shortcuts":
+		printIfHave(x.Name, "shortcuts",
+			strings.TrimRight(x.UsageCmdShortcuts(), "\n"))
 
 	case "description", "desc":
 		printIfHave(x.Name, "description",
@@ -231,6 +239,12 @@ func ForTerminal(x *Z.Cmd, section string) {
 		if len(x.Commands) > 0 {
 			Z.PrintEmph("**COMMANDS**\n")
 			Z.PrintIndent(x.UsageCmdTitles())
+			fmt.Println()
+		}
+
+		if len(x.Shortcuts) > 0 {
+			Z.PrintEmph("**SHORTCUTS**\n")
+			Z.PrintIndent(x.UsageCmdShortcuts())
 			fmt.Println()
 		}
 
