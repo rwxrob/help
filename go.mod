@@ -3,14 +3,14 @@ module github.com/rwxrob/help
 go 1.18
 
 require (
-	github.com/rwxrob/bonzai v0.12.1
+	github.com/rwxrob/bonzai v0.12.2
 	github.com/rwxrob/fn v0.3.3
 	github.com/rwxrob/to v0.5.2
 )
 
 require (
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
-	github.com/rwxrob/compcmd v0.2.1 // indirect
+	github.com/rwxrob/compcmd v0.2.2 // indirect
 	github.com/rwxrob/config v0.4.0 // indirect
 	github.com/rwxrob/fs v0.5.0 // indirect
 	github.com/rwxrob/json v0.7.0 // indirect
