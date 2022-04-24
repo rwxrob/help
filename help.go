@@ -18,7 +18,7 @@ import (
 // section of help wanted to be passed as a tab-completable parameter.
 var Cmd = &Z.Cmd{
 	Name:    `help`,
-	Version: `v0.4.0`,
+	Version: `v0.5.0`,
 	Summary: `display help similar to man page format`,
 	Usage:   `[SECTION|all]`,
 	Params: []string{
