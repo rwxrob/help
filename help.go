@@ -42,6 +42,7 @@ var Cmd = &Z.Cmd{
 				implemented:
 
             all           - display all sections (default)
+            aka|aliases   - display common aliases
             help          - displays this help
             name          - name of command
             title         - name with summary
@@ -143,6 +144,9 @@ func ForTerminal(x *Z.Cmd, section string) {
 	case "name":
 		printIfHave("command", "name", x.Name)
 
+	case "aliases", "aka":
+		printIfHave(x.Name, "aliases", aka(x))
+
 	case "title":
 		printIfHave(x.Name, "title", x.GetTitle())
 
@@ -193,8 +197,13 @@ func ForTerminal(x *Z.Cmd, section string) {
 
 	case "all":
 
-		Z.PrintEmph("**NAME**\n")
+		Z.PrintEmph("**NAME**\n\n")
 		Z.PrintMark(x.GetTitle() + "\n\n")
+
+		if len(x.Aliases) > 0 {
+			Z.PrintEmph("**ALIASES**\n\n")
+			Z.PrintMark(aka(x) + "\n\n")
+		}
 
 		// always print a synopsis so we can communicate with command
 		// developers about invalid field combinations through ERRORs
@@ -286,6 +295,12 @@ func ForTerminal(x *Z.Cmd, section string) {
 			}
 		}
 	}
+}
+
+func aka(x *Z.Cmd) string {
+	all := x.GetAliases()
+	all = append(all, x.Name)
+	return fmt.Sprintf("%v", strings.Join(all, "|"))
 }
 
 func getContact(x *Z.Cmd) string {
