@@ -11,6 +11,7 @@ import (
 	"github.com/rwxrob/bonzai"
 	Z "github.com/rwxrob/bonzai/z"
 	"github.com/rwxrob/fn/filt"
+	"github.com/rwxrob/term"
 	"github.com/rwxrob/to"
 )
 
@@ -25,13 +26,13 @@ var Cmd = &Z.Cmd{
 	Params: []string{
 		"name", "title", "summary", "params", "commands", "description",
 		"examples", "legal", "copyright", "license", "site", "source",
-		"issues", "contact", "version", "help", "shortcuts",
+		"issues", "contact", "version", "help", "shortcuts", "aka",
 	},
 	Comp: new(comp),
 	Description: `
-		The {{cmd .Name}} command provide generic help documentation by looking at
+		The {{aka}} command provides generic help documentation by looking at
 		the different fields of the given command associated with it. To get
-		specific help provide the command for which help is wanted before
+		specific help provided by the command for which help is wanted before
 		the help command. The exact section of help can also be specified as
 		an parameter after the help command itself. `,
 
@@ -82,9 +83,17 @@ var Cmd = &Z.Cmd{
 			goto ZERO
 		}
 
+		injectDynamic(x)
+
 		ForTerminal(x.Caller, args[0])
 		return nil
 	},
+}
+
+func injectDynamic(x *Z.Cmd) {
+	Z.Dynamic[`aka`] = func() string {
+		return term.Bold + AKA(x.Caller) + term.X
+	}
 }
 
 type comp struct{}
@@ -145,7 +154,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 		printIfHave("command", "name", x.Name)
 
 	case "aliases", "aka":
-		printIfHave(x.Name, "aliases", aka(x))
+		printIfHave(x.Name, "aliases", AKA(x))
 
 	case "title":
 		printIfHave(x.Name, "title", x.GetTitle())
@@ -202,7 +211,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 
 		if len(x.Aliases) > 0 {
 			Z.PrintEmph("**ALIASES**\n\n")
-			Z.PrintMark(aka(x) + "\n\n")
+			Z.PrintMark(AKA(x) + "\n\n")
 		}
 
 		// always print a synopsis so we can communicate with command
@@ -297,12 +306,6 @@ func ForTerminal(x *Z.Cmd, section string) {
 	}
 }
 
-func aka(x *Z.Cmd) string {
-	all := x.GetAliases()
-	all = append(all, x.Name)
-	return fmt.Sprintf("%v", strings.Join(all, "|"))
-}
-
 func getContact(x *Z.Cmd) string {
 	var out string
 
@@ -327,4 +330,21 @@ func getContact(x *Z.Cmd) string {
 	}
 
 	return out
+}
+
+// AKA returns the name followed by all aliases in parenthesis joined
+// with a forward bar (|) suitable for inlining within help
+// documentation. It is available as aka help template command as well.
+func AKA(x *Z.Cmd) string {
+	var aliases []string
+	for _, a := range x.Aliases {
+		if len(a) == 0 {
+			continue
+		}
+		aliases = append(aliases, term.Bold+a+term.X)
+	}
+	if len(aliases) == 0 {
+		return x.Name
+	}
+	return term.Bold + x.Name + term.X + " (" + strings.Join(aliases, "|") + ")"
 }
