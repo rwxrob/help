@@ -6,6 +6,7 @@ package help
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/rwxrob/bonzai"
@@ -146,7 +147,25 @@ func printIfHave(thing, name, value any) {
 // and supports terminal formatting including color.. Documentation must
 // be in BonzaiMark markup (see Z.Format). Emphasis is omitted if the
 // terminal is not interactive (see Z.Emph).
+//
+// ForTerminal will detect a system pager and use it if found.
 func ForTerminal(x *Z.Cmd, section string) {
+
+	pager := Z.FindPager()
+	var out string
+	var origOut *os.File
+
+	if pager != "" {
+		f, err := os.CreateTemp("", `help-*`)
+		if err != nil {
+			log.Println("unable to create temporary help file")
+			return
+		}
+		origOut = os.Stdout
+		out = f.Name()
+		defer func() { os.Stdout = origOut; os.Remove(out) }()
+		os.Stdout = f
+	}
 
 	switch section {
 
@@ -304,6 +323,14 @@ func ForTerminal(x *Z.Cmd, section string) {
 			}
 		}
 	}
+
+	if pager != "" {
+		os.Stdout = origOut
+		if err := Z.PageFile(out); err != nil {
+			log.Println(err)
+		}
+	}
+
 }
 
 func getContact(x *Z.Cmd) string {
