@@ -210,7 +210,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 		Z.PrintMark(x.GetTitle() + "\n\n")
 
 		if len(x.Aliases) > 0 {
-			Z.PrintEmph("**ALIASES**\n\n")
+			Z.PrintEmph("**ALIASES**\n")
 			Z.PrintMark(AKA(x) + "\n\n")
 		}
 
