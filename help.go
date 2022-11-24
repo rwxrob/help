@@ -206,7 +206,7 @@ func ForTerminal(x *Z.Cmd, section string) {
 
 	case "all":
 
-		Z.PrintEmph("**NAME**\n\n")
+		Z.PrintEmph("**NAME**\n")
 		Z.PrintMark(x.GetTitle() + "\n\n")
 
 		if len(x.Aliases) > 0 {
