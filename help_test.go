@@ -1,8 +1,10 @@
 package help_test
 
 import (
-	"github.com/rwxrob/help"
+	"fmt"
+
 	Z "github.com/rwxrob/bonzai/z"
+	"github.com/rwxrob/help"
 	"github.com/rwxrob/term"
 )
 
@@ -217,4 +219,30 @@ func ExampleCmd_all_Other() {
 	//
 	// BAR
 	//        WTF is a bar anyway
+}
+
+func ExampleS() {
+	text1 := "here is the summary\n"
+	text2 := "here is the summary\r"
+	text3 := "here is the summary"
+	text4 := "here is the summary\nanother line"
+	fmt.Println(help.S(text1))
+	fmt.Println(help.S(text2))
+	fmt.Println(help.S(text3))
+	fmt.Println(help.S(text4))
+	// Output:
+	// here is the summary
+	// here is the summary
+	// here is the summary
+	// here is the summary
+}
+
+func ExampleD() {
+	text1 := "here is the summary\n\nFirst line of D"
+	text2 := "here is the summary\r\n\r\nFirst line of D"
+	fmt.Println(help.D(text1))
+	fmt.Println(help.D(text2))
+	// Output:
+	// First line of D
+	// First line of D
 }

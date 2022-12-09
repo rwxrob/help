@@ -4,6 +4,7 @@
 package help
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -374,4 +375,33 @@ func AKA(x *Z.Cmd) string {
 		return x.Name
 	}
 	return term.Bold + x.Name + term.X + " (" + strings.Join(aliases, "|") + ")"
+}
+
+// S (Summary) function returns the first line of the string. Usually
+// the string passed is an embedded file passed as a string.
+func S(a string) string {
+	var line []rune
+	for _, r := range a {
+		if r == '\r' || r == '\n' {
+			break
+		}
+		line = append(line, r)
+	}
+	return string(line)
+}
+
+// D (Description) function returns all lines from the string starting
+// with the third from the top. This assumes S (Summary) is used and
+// separated by a blank line. This allows maintenance of large
+// Descriptions in embedded files in a way that allows easier
+// internationalization during compilation.
+func D(a string) string {
+	var body string
+	s := bufio.NewScanner(strings.NewReader(a))
+	s.Scan()
+	s.Scan()
+	for s.Scan() {
+		body += s.Text()
+	}
+	return body
 }
