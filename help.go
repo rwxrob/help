@@ -401,7 +401,7 @@ func D(a string) string {
 	s.Scan()
 	s.Scan()
 	for s.Scan() {
-		body += s.Text()
+		body += s.Text() + "\n"
 	}
 	return body
 }

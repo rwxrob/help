@@ -240,9 +240,13 @@ func ExampleS() {
 func ExampleD() {
 	text1 := "here is the summary\n\nFirst line of D"
 	text2 := "here is the summary\r\n\r\nFirst line of D"
-	fmt.Println(help.D(text1))
-	fmt.Println(help.D(text2))
+	text3 := "here is the summary\n\nFirst line of D\nSecond line of D"
+	fmt.Print(help.D(text1))
+	fmt.Print(help.D(text2))
+	fmt.Print(help.D(text3))
 	// Output:
 	// First line of D
 	// First line of D
+	// First line of D
+	// Second line of D
 }
